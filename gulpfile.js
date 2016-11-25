@@ -20,17 +20,15 @@ gulp.task('sass', () => {
 });
 
 gulp.task('html', () => {
-    return gulp.src('dist/index.html')
+    return gulp.src('dist/*.html')
         .pipe(refresh())
 });
 
 gulp.task('js', () => {
-    return gulp.src('lib/*.js'),
-        .pipe(uglify()),
-        .pipe(gulp.dest('dist/js')),
+    return gulp.src('lib/*.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('dist/js'))
         .pipe(refresh())
-
-  );
 });
 
 gulp.task('watch', () => {

@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&subset=cyrillic,cyrillic-ext");
+
+$main-font: "Open Sans", sans-serif;
+
+
+body {
+  font-family: $main-font;
+}
+
+i {
+  width: 1em;
+}
+
+.form-reg {
+  width: 100%;
+  max-width: 400px;
+  margin: 5% auto;
+}
+
+
+#result{
+  margin-top: 50px;
+  border-radius: 4px;
+}
