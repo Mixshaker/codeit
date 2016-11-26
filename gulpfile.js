@@ -24,18 +24,18 @@ gulp.task('html', () => {
         .pipe(refresh())
 });
 
-gulp.task('js', () => {
-    return gulp.src('lib/*.js')
-        .pipe(uglify())
-        .pipe(gulp.dest('dist/js'))
-        .pipe(refresh())
-});
+// gulp.task('js', () => {
+//     return gulp.src('lib/*.js')
+//         .pipe(uglify())
+//         .pipe(gulp.dest('./dist/js'))
+//         .pipe(refresh())
+// });
 
 gulp.task('watch', () => {
     refresh.listen()
     gulp.watch('sass/*.scss', ['sass'])
     gulp.watch('dist/*.html', ['html'])
-    gulp.watch('dist/js/*.js', ['js'])
+    // gulp.watch('dist/js/*.js', ['js'])
 });
 
-gulp.task('default', ['sass', 'html', 'js', 'watch']);
+gulp.task('default', ['sass', 'html', 'watch']);

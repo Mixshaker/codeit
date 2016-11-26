@@ -4,10 +4,112 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/style.css">
-  <script src="js/main.js"></script>
-  <title></title>
+  <script src="js/moment.min.js"></script>
+
+  <title>Companies statistic</title>
 </head>
 <body>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-0">
+        <div class="panel panel-info">
+          <div class="panel-heading">Total Companies</div>
+          <div class="panel-body"><div id="total-comp"></div></div>
+        </div>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-0">
+        <div class="panel panel-info">
+          <div class="panel-heading">List of Companies</div>
+          <div class="panel-body">
+            <div id="list-comp"><ul></ul></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1 col-md-12 col-md-offset-0">
+        <div class="panel panel-info">
+          <div class="panel-heading">Company partners</div>
+          <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, tenetur impedit dolores voluptas? Explicabo, optio!</div>
+        </div>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-0">
+        <div class="panel panel-info">
+          <div class="panel-heading">Companies by Location</div>
+          <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque id dolorem at, laboriosam quasi totam.</div>
+        </div>
+      </div>
+      <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-0">
+        <div class="panel panel-info">
+          <div class="panel-heading">News</div>
+          <div class="panel-body">
+
+
+                <div id="carousel-news" class="carousel slide" data-ride="carousel">
+
+
+                  <!-- Wrapper for slides -->
+                  <div class="carousel-inner">
+                    <div class="row item active">
+                      <div class="news-img col-xs-12 col-md-6 col-lg-5">
+                        <img src="http://dummyimage.com/333x143.bmp/dddddd/000000" alt="">
+                      </div>
+                      <div class="news-body col-xs-12 col-md-6 col-lg-7">
+                        <h3><a href="http://codeit.com.ua" target="_blank">Title</a></h3>
+                        <p>In congue. Etiam justo. Etiam pretium iaculis justo. In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.</p>
+                      </div>
+                      <div class="news-footer col-xs-12 bg-info">
+                        <div class="col-xs-6 text-left">
+                          <b>Author:</b> Helen Armstrong
+                        </div>
+                        <div class="col-xs-6 text-right">
+                          <b>Date:</b> <b>Date: </b><script>var datenews = moment.unix(1461887792).format("DD.MM.YYYY");
+                        document.write(datenews);</script>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row item">
+                      <div class="news-img col-xs-12 col-md-6 col-lg-5">
+                        <a href="http://codeit.com.ua"><img src="http://dummyimage.com/566x705.png/dddddd/000000" alt=""></a>
+                      </div>
+                      <div class="news-body col-xs-12 col-md-6 col-lg-7">
+                        <h3><a href="http://codeit.com.ua" target="_blank">Title</a></h3>
+                        <p>Quisque id justo sit amet sapien dignissim vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Nulla dapibus dolor vel est. Donec odio justo, sollicitudin ut, suscipit a, feugiat et, eros. Vestibulum ac est lacinia nisi venenatis tristique. Fusce congue, diam id ornare imperdiet, sapien urna pretium nisl, ut volutpat sapien arcu sed augue. Aliquam erat volutpat.</p>
+                      </div>
+                      <div class="news-footer col-xs-12 bg-info">
+                        <div class="col-xs-6 text-left">
+                          <span><b>Author:</b> Helen Armstrong</span>
+                        </div>
+                        <div class="col-xs-6 text-right">
+                          <span><b>Date:</b> 1475757129</span>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+
+                  <div>
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                      <li data-target="#carousel-news" data-slide-to="0" class="active"></li>
+                      <li data-target="#carousel-news" data-slide-to="1"></li>
+                    </ol>
+                  </div>
+                </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="js/jquery-3.1.1.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
+  <script src="js/slimscroll.min.js"></script>
+  <script src="js/main.js"></script>
 
 </body>
 </html>
