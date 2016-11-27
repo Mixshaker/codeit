@@ -1,128 +1,119 @@
 "use strict";
 
-// переменные из кода
+// variable from html
 var $total = $('#total-comp'),
     $listcomp = $('#list-comp ul'),
-    $news = $('#carousel-news'),
-    $newsimg = $('.news-img img'),
-    $newstitle = $('.news-body h3 a'),
-    $newstext = $('.news-body p'),
-    $newsdate = $('.newsdate'),
-    $newsauth = $('.newsauthor'),
-    $indicators = $('.carousel-indicators');
-
-
-
+    $news = $('.carousel-inner'),
+    $indicators = $('.carousel-indicators'),
+    loader = '<div class="loader"></div>';
 
 // loaders
-  var loader = '<div class="loader"></div>';
-  $total.html(loader);
-  $listcomp.html(loader);
-  // $news.html(loader);
-
-
+$total.html(loader);
+$listcomp.html(loader);
+$news.html(loader);
 
 
 $(function() {
-  // список компаний
-  var requestComp = $.getJSON( "http://codeit.pro/frontTestTask/company/getList", function(data) {
+    // companies
+    var requestComp = $.getJSON("http://codeit.pro/frontTestTask/company/getList", function(data) {
 
-    var items = [];
-    $.each(data, function(key, val) {
-      items.push( {key: val});
-    });
-    var compArr = items[0]['key'];
+        var items = [];
+        $.each(data, function(key, val) {
+            items.push({
+                key: val
+            });
+        });
+        var compArr = items[0]['key'];
 
-    var name = compArr.map(item => item.name);
+        var name = compArr.map(item => item.name);
 
-    // общее кол-во компаний
-     $total.text(name.length);
+        // total companies
+        $total.text(name.length);
 
-    // список компаний
-    $.each(name, function(key,val){
-        items.push( `<a href="${val}"><li>${val}</li></a>` );
-      });
+        // companies list
+        $.each(name, function(key, val) {
+            items.push(`<a href="#" id="${val}"><li>${val}</li></a>`);
+        });
 
-    $listcomp.html(items);
-
-
-
-    // массив локаций
-    var location = compArr.map(item => item.location);
-    // console.log(location);
-
-    // массив парнеров
-    var partners = compArr.map(item => item.partners);
-    // console.log(partners);
-
-  });
-
-  // requestComp.done(function( msg ) {
-  //   $( "#log" ).html( msg );
-  // });
+        $listcomp.html(items);
 
 
-  // список новостей
-  $.getJSON("http://codeit.pro/frontTestTask/news/getList", function(data) {
-    var items = [];
-    $.each(data, function(key, val) {
-      items.push( {key: val});
-    });
 
-    var newsArr = items[0]['key'];
-    console.log(newsArr);
+        // массив локаций
+        var location = compArr.map(item => item.location);
+        console.log(location);
 
-    // var news = newsArr.map(item => [item.author, item.date, item.description, item.img, item.link]);
-    // console.log(news);
+        // массив парнеров
+        var partners = compArr.map(item => item.partners);
+        console.log(partners);
 
-    $.each(newsArr, function(i) {
-       $newsimg.attr('src', this.img);
-       $newstitle.attr('href', `http://${this.link}`);
-       $newstext.text(this.description);
-       // $newsdate.attr(this.date);
-       $newsdate.text(moment.unix(this.date).format("DD.MM.YYYY"));
-       $newsauth.text(this.author);
-       $indicators.append(`<li data-target="#carousel-news" data-slide-to="${i}"></li>`);
     });
 
 
-      // $('#carousel-news').addClass('active');
 
-      // обрезка текста новости
-      var text = $('.news-body p').text();
-      var sliced = text.slice(0,220);
-      if (sliced.length < text.length) {
-      sliced += '...';
-      }
-      $('.news-body p').text(sliced);
+    // news list
+    $.getJSON("http://codeit.pro/frontTestTask/news/getList", function(data) {
+        var items = [];
+        $.each(data, function(key, val) {
+            items.push({
+                key: val
+            });
+        });
 
+        var newsArr = items[0]['key'];
+        $news.empty();
 
-    // console.log(newsArr[0]['author']);
-    // console.log(newsArr[3]['link']);
-
-    // timestamp to date
-
-    // var newsdate = moment.unix(1455091071).format("DD.MM.YYYY");
-    // $('.newsdate').text(newsdate);
+        console.log(newsArr);
+// <p>${val.description}</p>
 
 
+        // news block
+        $.each(newsArr, function(i, val) {
+            // cut news text
+              var sliced = val.description.slice(0, 200);
+              sliced = (sliced.length < val.description.length) ? sliced += '...' : sliced;
 
-  });
+            $news.append(`
+              <div class="row item">
+                <div class="news-img col-xs-12 col-md-6 col-lg-5">
+                  <img src="${val.img}" alt="">
+                </div>
+                <div class="news-body col-xs-12 col-md-6 col-lg-7">
+                  <h3><a href="${val.link}" target="_blank">Title</a></h3>
+                   <p>${sliced}</p>
+                </div>
+                <div class="news-footer col-xs-12 bg-info">
+                  <div class="col-xs-6 text-left">
+                    <b>Author:</b> <span class="newsauthor">${val.author}</span>
+                  </div>
+                  <div class="col-xs-6 text-right">
+                    <b>Date:</b> <span class="newsdate">${moment.unix(val.date).format("DD.MM.YYYY")}</span>
+                  </div>
+                </div>
+              </div>
+            `);
+
+            $indicators.append(`<li data-target="#carousel-news" data-slide-to="${i}"></li>`);
+        });
+
+        // active class for first slide
+        $($indicators).find("li").eq(0).addClass('active');
+        $('.carousel-inner .item').eq(0).addClass('active');
+
+    });
 
 
-
-  // custom scroll
-
-  $('#list-comp').slimscroll({
-    height: '121px',
-    color: '#333',
-    size: '11px',
-    alwaysVisible: true,
-    railVisible: true,
-    railColor: '#ccc',
-    railOpacity: .8,
-    wheelStep: 10
-  });
-
+    // custom scroll
+    $('#list-comp').slimscroll({
+        height: '121px',
+        color: '#333',
+        size: '11px',
+        alwaysVisible: true,
+        railVisible: true,
+        railColor: '#ccc',
+        railOpacity: .8,
+        wheelStep: 10
+    });
 
 });
+
