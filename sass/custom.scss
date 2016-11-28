@@ -72,13 +72,18 @@ i {
     background: $lgrey;
   }
 }
+
 li.active {
   background: $lblue;
 }
 
+
 // company partners
 #partners {
   display: none;
+  & .panel-heading .btn {
+    padding: 0 2px;
+  }
   & .panel-body {
     overflow-x: auto;
   }
@@ -89,10 +94,43 @@ li.active {
   height: 250px;
 }
 
+
 //company location
-#charlocation{
+#location {
+  & .panel-heading .btn {
+    padding: 0 2px;
+  }
+}
+
+#charlocation {
   width: 100%;
   height: 235px;
+}
+
+#listlocation {
+  font-size: 1.1em;
+  line-height: 1.5em;
+  overflow-y: auto;
+  height: 230px;
+  & ul {
+    padding-left: 0;
+    border: 1px solid $lgrey;
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+  & li {
+    padding-left: 10px;
+    list-style: none;
+    border-bottom: 1px solid $lgrey;
+  }
+  & a {
+    text-decoration: none;
+  }
+  & a:hover li {
+    color: $green;
+    background: $lgrey;
+  }
 }
 
 
@@ -118,6 +156,7 @@ li.active {
   }
 }
 
+
 // news indicators
 .carousel-indicators {
   position: relative;
@@ -138,6 +177,7 @@ li.active {
     background-color: $dgrey;
   }
 }
+
 
 // loaders before date loads
 .loader {

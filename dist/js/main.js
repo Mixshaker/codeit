@@ -3,6 +3,8 @@
 // variable from html
 var $total = $('#total-comp'),
     $listcomp = $('#list-comp ul'),
+    $ChartComp = $('#charlocation'),
+    $listChartComp = $('#listlocation ul'),
     $news = $('.carousel-inner'),
     $indicators = $('.carousel-indicators'),
     loader = '<div class="loader"></div>';
@@ -11,6 +13,7 @@ var $total = $('#total-comp'),
 $total.html(loader);
 $listcomp.html(loader);
 $news.html(loader);
+$ChartComp.html(loader);
 
 
 function compareNumeric(a, b) {
@@ -25,7 +28,7 @@ function compareName(a, b) {
 
 $(function() {
     // companies
-    var requestComp = $.getJSON("http://codeit.pro/frontTestTask/company/getList", function(data) {
+    $.getJSON("http://codeit.pro/frontTestTask/company/getList", function(data) {
 
         var items = [];
         $.each(data, function(key, val) {
@@ -48,45 +51,20 @@ $(function() {
 
         $listcomp.html(items);
 
-        // location array
-        var location = compArr.map(item => item.location);
-        console.log(location);
-
-
-        // partners array
-        var partners = compArr.map(item => item.partners);
-
-
         var comp_id, //id of company
             part_arr, //array of parners
-            location_arr; //array oа companies location
+            location_arr, //array of companies location
+            loc_arr_ass = [], //associative array of companies location for chart
+            chart, //Partners chart
+            chart_loc, //Location chart
+            partners, //partners array
+            location; //location array
 
 
+        /*--PARTNERS--*/
 
-        // Location chart
-        var chart_loc = AmCharts.makeChart("charlocation", {
-            "type": "pie",
-            "titleField": "Location",
-            "valueField": "",
-            "balloon": {
-                "fixedPosition": true
-            }
-        });
-
-        // location array for chart
-        location_arr = location.reduce((counts, country) => {
-            counts[country.code] = (counts[country.code] || 0) + 1;
-            return counts;
-        }, []);
-        console.log(location_arr);
-        chart_loc.dataProvider = location_arr;
-        chart_loc.validateData();
-
-
-
-
-
-
+        // partners array
+        partners = compArr.map(item => item.partners);
 
         $('#list-comp a').on("click", function() {
             $('#partners').slideDown('600');
@@ -126,7 +104,7 @@ $(function() {
         });
 
         // Company partners charts
-        var chart = AmCharts.makeChart("chartpartners", {
+        chart = AmCharts.makeChart("chartpartners", {
             "type": "serial",
             "valueAxes": [{
                 "gridColor": "#FFFFFF",
@@ -156,6 +134,73 @@ $(function() {
                 "tickLength": 20
             }
         });
+
+        /*--LOCATION--*/
+        $('#listlocation').hide();
+        $('#backtochart').hide();
+
+        // Location chart
+        chart_loc = AmCharts.makeChart("charlocation", {
+            "type": "pie",
+            "titleField": "country",
+            "valueField": "value",
+            "balloon": {
+                "fixedPosition": true
+            },
+            "listeners": [{
+                "event": "clickSlice",
+                "method": function(e) {
+                    var dp = e.dataItem.dataContext;
+                    $('#charlocation').hide();
+                    $('#listlocation').show();
+                    $('#backtochart').show();
+
+                    var getProp = prop => object => object[prop];
+                    var getCompName = getProp('name');
+
+                    var selCountry = local => local.location.name === dp.country; //filter country
+
+                    var contryCompanies = compArr
+                        .filter(selCountry)
+                        .map(getCompName);
+
+                    var selItems = [];
+
+                    $.each(contryCompanies, function(key, val) {
+                        selItems.push(`<a href="#"><li>${val}</li></a>`);
+                    });
+
+                    $listChartComp.html(selItems);
+
+                    $('#backtochart').on("click", function() {
+                        $('#listlocation').hide();
+                        $('#backtochart').hide();
+                        $('#charlocation').show();
+                    });
+
+                }
+            }]
+        });
+
+        // location array
+        location = compArr.map(item => item.location);
+
+        // location array for chart
+        location_arr = location.reduce((counts, country) => {
+            counts[country.name] = (counts[country.name] || 0) + 1;
+            return counts;
+        }, {});
+
+        for (let key in location_arr) {
+            loc_arr_ass.push({
+                'country': key,
+                'value': location_arr[key]
+            });
+        }
+
+        chart_loc.dataProvider = loc_arr_ass;
+        chart_loc.validateData();
+
     });
 
     // news list
