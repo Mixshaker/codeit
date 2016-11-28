@@ -13,6 +13,16 @@ $listcomp.html(loader);
 $news.html(loader);
 
 
+function compareNumeric(a, b) {
+    if (a.value > b.value) return 1;
+    if (a.value < b.value) return -1;
+}
+
+function compareName(a, b) {
+    if (a.name > b.name) return 1;
+    if (a.name < b.name) return -1;
+}
+
 $(function() {
     // companies
     var requestComp = $.getJSON("http://codeit.pro/frontTestTask/company/getList", function(data) {
@@ -28,28 +38,125 @@ $(function() {
         var name = compArr.map(item => item.name);
 
         // total companies
-        $total.text(name.length);
+        var total = name.length;
+        $total.text(total);
 
         // companies list
         $.each(name, function(key, val) {
-            items.push(`<a href="#" id="${val}"><li>${val}</li></a>`);
+            items.push(`<a href="#" data-id="${key}"><li>${val}</li></a>`);
         });
 
         $listcomp.html(items);
 
-
-
-        // массив локаций
+        // location array
         var location = compArr.map(item => item.location);
         console.log(location);
 
-        // массив парнеров
+
+        // partners array
         var partners = compArr.map(item => item.partners);
-        console.log(partners);
 
+
+        var comp_id, //id of company
+            part_arr, //array of parners
+            location_arr; //array oа companies location
+
+
+
+        // Location chart
+        var chart_loc = AmCharts.makeChart("charlocation", {
+            "type": "pie",
+            "titleField": "Location",
+            "valueField": "",
+            "balloon": {
+                "fixedPosition": true
+            }
+        });
+
+        // location array for chart
+        location_arr = location.reduce((counts, country) => {
+            counts[country.code] = (counts[country.code] || 0) + 1;
+            return counts;
+        }, []);
+        console.log(location_arr);
+        chart_loc.dataProvider = location_arr;
+        chart_loc.validateData();
+
+
+
+
+
+
+
+        $('#list-comp a').on("click", function() {
+            $('#partners').slideDown('600');
+            $('#list-comp a li').removeClass('active');
+            $(this).find('li').addClass('active');
+
+            comp_id = $(this).data('id');
+            part_arr = partners[comp_id];
+
+            part_arr.sort(compareNumeric).reverse();
+            chart.dataProvider = part_arr;
+            chart.validateData();
+        });
+
+        $('#percent-up').on("click", function() {
+            part_arr.sort(compareNumeric);
+            chart.dataProvider = part_arr;
+            chart.validateData();
+        });
+
+        $('#percent-down').on("click", function() {
+            part_arr.sort(compareNumeric).reverse();
+            chart.dataProvider = part_arr;
+            chart.validateData();
+        });
+
+        $('#name-up').on("click", function() {
+            part_arr.sort(compareName);
+            chart.dataProvider = part_arr;
+            chart.validateData();
+        });
+
+        $('#name-down').on("click", function() {
+            part_arr.sort(compareName).reverse();
+            chart.dataProvider = part_arr;
+            chart.validateData();
+        });
+
+        // Company partners charts
+        var chart = AmCharts.makeChart("chartpartners", {
+            "type": "serial",
+            "valueAxes": [{
+                "gridColor": "#FFFFFF",
+                "gridAlpha": 0.2,
+                "dashLength": 0,
+                "title": "Percents, %"
+            }],
+            "gridAboveGraphs": true,
+            "startDuration": 1,
+            "graphs": [{
+                "balloonText": "[[category]]: <b>[[value]]</b>",
+                "fillAlphas": 0.8,
+                "lineAlpha": 0.2,
+                "type": "column",
+                "valueField": "value"
+            }],
+            "chartCursor": {
+                "categoryBalloonEnabled": false,
+                "cursorAlpha": 0,
+                "zoomable": false
+            },
+            "categoryField": "name",
+            "categoryAxis": {
+                "gridPosition": "start",
+                "gridAlpha": 0,
+                "tickPosition": "start",
+                "tickLength": 20
+            }
+        });
     });
-
-
 
     // news list
     $.getJSON("http://codeit.pro/frontTestTask/news/getList", function(data) {
@@ -63,15 +170,12 @@ $(function() {
         var newsArr = items[0]['key'];
         $news.empty();
 
-        console.log(newsArr);
-// <p>${val.description}</p>
-
-
         // news block
         $.each(newsArr, function(i, val) {
+
             // cut news text
-              var sliced = val.description.slice(0, 200);
-              sliced = (sliced.length < val.description.length) ? sliced += '...' : sliced;
+            var sliced = val.description.slice(0, 220);
+            sliced = (sliced.length < val.description.length) ? sliced += '...' : sliced;
 
             $news.append(`
               <div class="row item">
@@ -116,4 +220,3 @@ $(function() {
     });
 
 });
-

@@ -6,6 +6,11 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="js/moment.min.js"></script>
 
+  <script src="js/amcharts.js"></script>
+  <script src="js/dataloader.min.js"></script>
+  <script src="js/serial.js"></script>
+  <script src="js/pie.js"></script>
+
   <title>Companies statistic</title>
 </head>
 <body>
@@ -25,16 +30,24 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-10 col-xs-offset-1 col-md-12 col-md-offset-0">
+      <div id="partners" class="col-xs-10 col-xs-offset-1 col-md-12 col-md-offset-0">
         <div class="panel panel-info">
-          <div class="panel-heading">Company partners</div>
-          <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Provident, tenetur impedit dolores voluptas? Explicabo, optio!</div>
+          <div class="panel-heading">Company partners </div>
+          <div class="panel-body">
+            <button class="btn btn-info" id="percent-up">% <i class="fa fa-arrow-up"></i></button>
+            <button class="btn btn-info" id="percent-down">% <i class="fa fa-arrow-down"></i></button>
+            <button class="btn btn-info" id="name-up">Name <i class="fa fa-arrow-up"></i></button>
+            <button class="btn btn-info" id="name-down">Name <i class="fa fa-arrow-down"></i></button>
+            <div id="chartpartners"></div>
+          </div>
         </div>
       </div>
       <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-0">
         <div class="panel panel-info">
           <div class="panel-heading">Companies by Location</div>
-          <div class="panel-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque id dolorem at, laboriosam quasi totam.</div>
+          <div class="panel-body">
+            <div id="charlocation"></div>
+          </div>
         </div>
       </div>
       <div class="col-xs-10 col-xs-offset-1 col-md-6 col-md-offset-0">
@@ -55,7 +68,6 @@
       </div>
     </div>
   </div>
-
 
   <script src="js/jquery-3.1.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
