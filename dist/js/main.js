@@ -26,6 +26,8 @@ function compareName(a, b) {
     if (a.name < b.name) return -1;
 }
 
+
+
 $(function() {
     // companies
     $.getJSON("http://codeit.pro/frontTestTask/company/getList", function(data) {
@@ -79,29 +81,22 @@ $(function() {
             chart.validateData();
         });
 
-        $('#percent-up').on("click", function() {
-            part_arr.sort(compareNumeric);
-            chart.dataProvider = part_arr;
-            chart.validateData();
-        });
+        // sorting function
 
-        $('#percent-down').on("click", function() {
-            part_arr.sort(compareNumeric).reverse();
-            chart.dataProvider = part_arr;
-            chart.validateData();
-        });
+        function sorting(obj, func, way){
+            $(obj).on("click", function() {
+                if (way == 'up') part_arr.sort(func);
+                if (way == 'down') part_arr.sort(func).reverse();
+                chart.dataProvider = part_arr;
+                chart.validateData();
+            });
+        }
 
-        $('#name-up').on("click", function() {
-            part_arr.sort(compareName);
-            chart.dataProvider = part_arr;
-            chart.validateData();
-        });
+        sorting('#percent-up', compareNumeric, 'up');
+        sorting('#percent-down', compareNumeric, 'down');
+        sorting('#name-up', compareName, 'up');
+        sorting('#name-down', compareName, 'down');
 
-        $('#name-down').on("click", function() {
-            part_arr.sort(compareName).reverse();
-            chart.dataProvider = part_arr;
-            chart.validateData();
-        });
 
         // Company partners charts
         chart = AmCharts.makeChart("chartpartners", {
